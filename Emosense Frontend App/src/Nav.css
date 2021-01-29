@@ -8,10 +8,44 @@ nav {
     color: white;
 }
 
+nav1 {
+    display: flex;
+    width: 100%;
+    min-height: 5vh;
+    color: white;
+}
+
 .nav-links {
-    width: 40%;
+    width: 100%;
     display: flex;
     justify-content: space-around;
     align-items: center;
     list-style: none;
+}
+.split1{
+  width: 40%;
+  background-color: #0A5E98;
+  z-index: 1;
+  overflow-x: hidden;
+  opacity: 0.7;
+  padding-top: 0px;
+  margin-top:0px;
+  padding-right: 0px;
+}
+.split2{
+  width: 60%;
+  background-color: #0A3E98;
+  z-index: 1;
+  overflow-x: hidden;
+  opacity: 0.7;
+  padding-top: 0px;
+  margin-top:0px;
+  padding-right: 0px;
+}
+
+.left{
+  left: 0;
+}
+.right{
+  right: 0;
 }

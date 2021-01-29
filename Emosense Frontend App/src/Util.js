@@ -100,3 +100,14 @@ export function emotionProbDict(data){
     }
     
 }
+
+export function distressProbDict(data){
+    if (data==1000){
+        return [{ status: 'Normal', probability: 0.0 }, { status: 'Distress', probability: 0.0 }];
+    } else {
+        const responsePredictions = [{ status: 'Normal', probability: data.prediction[0] },
+                                    { status: 'Distress', probability: data.prediction[1] }];
+        return responsePredictions;
+    }
+    
+}
