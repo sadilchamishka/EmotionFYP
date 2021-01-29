@@ -4,6 +4,8 @@ import Nav from './Nav';
 import UploadUtterence from './UploadUtterence';
 import RecordUtterence from './RecordUtterence';
 import UploadConversation from './UploadConversation';
+import UploadSpeech from './UploadSpeech';
+import RecordSpeech from './RecordSpeech';
 
 function App() {
 
@@ -13,6 +15,8 @@ function App() {
        <Router>
             <Nav/>
               <Switch>
+                <Route path="/uploaddistress" component={UploadSpeech}/>
+                <Route path="/recorddistress" component={RecordSpeech}/>
                 <Route path="/uploadutterence" component={UploadUtterence}/>
                 <Route path="/recordutterence" component={RecordUtterence}/>
                 <Route path="/uploadconversation" component={UploadConversation}/>
