@@ -1,6 +1,10 @@
 import React, {useState } from 'react';
 import {distressProbDict} from './Util'
 
+//********************************//
+import RadarChart from 'react-svg-radar-chart';
+import 'react-svg-radar-chart/build/css/index.css'
+//*********************************//
 import {Button,Input} from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -15,8 +19,22 @@ import {
 } from '@devexpress/dx-react-chart-material-ui';
 
 import { Animation } from '@devexpress/dx-react-chart';
+import plutchik from 'plutchik.png';
+
 
 const serverURL = "http://localhost:5001/";
+
+//*********************************//
+const captions = {
+      // columns
+      happy: 'Happy',
+      excited: 'Excited',
+      sad: 'Sad',
+      frustration: 'Frustration',
+      angry: 'Angry'
+
+    };
+//**
 
 const useStyles = makeStyles((theme) => ({
     paper1: {
@@ -43,6 +61,14 @@ function UploadSpeech() {
 const [predictions, setPredictions] = useState(distressProbDict(1000));
 const classes = useStyles();
 
+//*********************************//
+const [radarChartData, setRadarChartData] = useState([{ data: {  happy: 0,
+                  excited: 0,
+                sad: 0,
+                angry: 0,
+                frustration: 0 } } ]);
+//*********************************//
+
 const submitSpeech = async () =>{
   
   
@@ -54,6 +80,16 @@ const submitSpeech = async () =>{
    
     const responsePredictions = distressProbDict(data);
     setPredictions(responsePredictions);
+
+    //*********************************//
+    const data_ = data["prediction"];
+
+    setRadarChartData([{ data: {  happy: data_[0],
+                 excited: data_[4],
+                 sad: data_[1],
+                 angry: data_[3],
+                 frustration: data_[5]}, meta: {color: 'blue'} } ]);
+    //*********************************//
 }
 
   return (
@@ -65,6 +101,7 @@ const submitSpeech = async () =>{
           <ColorButton style={{float: 'right'}}  onClick={submitSpeech} variant="contained" color="primary"> Detect </ColorButton>
       </Paper>
     </Grid>
+
 
      <Paper>
       <Chart data={predictions}>
@@ -79,6 +116,11 @@ const submitSpeech = async () =>{
         <Animation />
       </Chart>
     </Paper>
+
+    <img src={plutchik} width='670' height='500'/>
+
+    
+    <RadarChart captions={captions} data={radarChartData} size={500} />
 
     
   </div>

@@ -1,6 +1,11 @@
 import React, {useState } from 'react';
 import {emotionProbDict} from './Util'
 
+//********************************//
+import RadarChart from 'react-svg-radar-chart';
+import 'react-svg-radar-chart/build/css/index.css'
+//*********************************//
+
 import {Button,Input} from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -15,9 +20,21 @@ import {
 } from '@devexpress/dx-react-chart-material-ui';
 
 import { Animation } from '@devexpress/dx-react-chart';
+import plutchik from 'plutchik.png';
 
 const serverURL = "http://localhost:5000/";
 
+//*********************************//
+const captions = {
+      // columns
+      happy: 'Happy',
+      excited: 'Excited',
+      sad: 'Sad',      
+      frustration: 'Frustration',
+      angry: 'Angry',
+    };
+//*********************************//
+  
 const useStyles = makeStyles((theme) => ({
     paper1: {
       maxWidth: 730,
@@ -41,6 +58,15 @@ const ColorButton = withStyles((theme) => ({
 function UploadUtterence() {
 
 const [predictions, setPredictions] = useState(emotionProbDict(0));
+
+//*********************************//
+const [radarChartData, setRadarChartData] = useState([{ data: {  happy: 0,
+			  					excited: 0,
+								sad: 0,
+								angry: 0,
+								frustration: 0 } } ]);
+//*********************************//
+
 const classes = useStyles();
 
 const submitUtterence = async () =>{
@@ -52,6 +78,16 @@ const submitUtterence = async () =>{
     
     const responsePredictions = emotionProbDict(data);
     setPredictions(responsePredictions);
+    
+    //*********************************//
+    const data_ = data["prediction"];
+
+    setRadarChartData([{ data: {  happy: data_[0],
+			           excited: data_[4],
+			           sad: data_[1],
+			           angry: data_[3],
+			           frustration: data_[5]}, meta: {color: 'blue'} } ]);
+    //*********************************//
 }
 
   return (
@@ -61,9 +97,12 @@ const submitUtterence = async () =>{
       <Paper className={classes.paper1}>
           <Input type="file" id="f1" color="primary"></Input>  &emsp;
           <ColorButton style={{float: 'right'}}  onClick={submitUtterence} variant="contained" color="primary"> Predict </ColorButton>
+         
       </Paper>
+
     </Grid>
 
+    
     <Paper>
       <Chart data={predictions}>
         <ArgumentAxis />
@@ -77,6 +116,13 @@ const submitUtterence = async () =>{
         <Animation />
       </Chart>
     </Paper>
+       
+   <img src={plutchik} width='670' height='500'/>
+
+    
+    <RadarChart captions={captions} data={radarChartData} size={500} />
+
+
   </div>
   );
 }
